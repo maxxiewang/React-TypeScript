@@ -21,7 +21,7 @@ export default class App extends Component<Props,State> {
     生命周期的第一阶段 ：初始化
     主要是两个函数，第一个初始化state，第二个为compondentDidMount
     将会在组件创建好dom原素后，挂载进页面时调用，只会在组件初始化的时候调用一次
-    
+
   */
   constructor(props){
     super(props)
@@ -31,13 +31,13 @@ export default class App extends Component<Props,State> {
     }    
   }
   
-    //componentDidMount，render函数执行后
  /* 
   setState是异步处理的，本身提供了一个回调方法(就是第二个参数 )，用来访问处理后的数据
   答案是：异步更新，同步执行。
   setState()本身并非异步，但对state的处理机制给人一种异步的假像，state处理一般发生在生命周期变化的时候。
 
  */
+  //componentDidMount，render函数执行后
   componentDidMount(){
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
