@@ -24,7 +24,6 @@ JSS 模块化引入组件,把 CSS 转化为对象,通过对象的方式,模块�
 import style from './index.css'
 
 <div className={style.app}/>
-
 ### --save-dev
 
 区分普通依赖与 dev 依赖,dev 依赖:仅参与代码开发而不参与最终上线打包的项目
@@ -39,3 +38,8 @@ Props:Properties 的缩写，组件属性。
 本质上，props 就是传入函数的参数，是从组件外部传入组件内部的数据，更准确地说，是从父组件向子组件传递的数据。
 所有的 props 全部都是只读的(immutable)，对象一旦创建就不可改变，只能通过销毁、重建来改变数据。
 通过判断内存地址是否一致，来确认对象是否有经过修改。
+
+React组件的生命周期
+Mounting:创建虚拟DOM，渲染UI
+Updating:更新虚拟DOM，重新渲染UI
+Unmounting:删除虚拟DOM，移除UI
