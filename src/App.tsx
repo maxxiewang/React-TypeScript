@@ -4,17 +4,21 @@ import Robot from './components/Robots';
 import logo from './assets/images/logo.svg'
 import ShoppingCart from './components/ShoppingCart';
 
-
+interface Props{
+  userName:string
+}
 /* 
   useEffect，副作用函数Side-effect  输入参数一样，而输出结果不确定的情况就是副作用
   在使用React时，经常用useEffect，比如通过API获取数据，处理事件订阅等。
   简单来说，APP就是通过副作用与外界产生交流和互动的。
 */
 
-const App: React.FC = (props) => {
+const App: React.FC<Props> = (props) => {
   // 实际上这个数组第一个元素就是state的getter，第二个就是state的setter
   const [count, setCount] = useState<number>(0) //count状态的初始化值，即0
   const [robotGallery, setRobotGallery] = useState<any>([]) //初始化为一个空数组
+  const [loading, setLoading] = useState<boolean>(false) // 初始化值，false
+  const [error, setError] = useState<string>('')
   // setCount是异步的，而且没有重载，不能提供回调接口
   // 那么如何处理异步逻辑呢，一般不需要处理，如果需的话就进入副作用钩子
   /* 
@@ -27,27 +31,56 @@ const App: React.FC = (props) => {
   useEffect(()=>{
     document.title = `点击了${count}次`
   },[count])
-  useEffect(()=>{
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((data) => setRobotGallery(data));
-  },[])
+
+  // useEffect(()=>{
+  //   fetch("https://jsonplaceholder.typicode.com/users")
+  //     .then((response) => response.json())
+  //     .then((data) => setRobotGallery(data));
+  // },[]) // 注意这个空数组
+
+  // 如何在副作用函数中使用asnyc await
+  // 如何处理异常
+  useEffect(()=>{    
+    const fetchData = async ()=>{
+      setLoading(true);
+      try {
+        const responses = await fetch(
+          "https://jsonplaceholder.typicode.com/users"
+        );
+        // .then(response => response.json())
+        // .then(data => setRobotGallery(data))
+        const data = await responses.json();
+        setRobotGallery(data);
+      } catch (e:any) {
+        console.log('e.message',e.message)
+        setError(e.message);
+      }
+      setLoading(false);
+    }
+    fetchData()
+  },[]) // 注意这个空数组
   return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
             <img src={logo} alt="logo" className={styles.appLogo}/>
             <h1>CyberPunk机器人Inc</h1>
           </div>
+          <h2>{props.userName}</h2>
+
           <button onClick={()=>{
             setCount(count +1)
           }}>计数器</button>
           <span>count:{count}</span>
           <ShoppingCart/>
-          <div className={styles.robotList}>
-            {robotGallery.map(r => {
-            return <Robot id={r.id} email={r.email} name={r.name} key={r.id}/>
-            })}
-          </div>
+          {(error || error!== "") && <div>网站出错：{error}</div>}
+          {
+            !loading?
+            (<div className={styles.robotList}>
+              {robotGallery.map(r => {
+              return <Robot id={r.id} email={r.email} name={r.name} key={r.id}/>
+              })}
+            </div>):(<h2>loading 加载中</h2>)
+          }
         </div>
     )
 }

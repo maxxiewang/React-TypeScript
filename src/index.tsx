@@ -4,9 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const userName = 'yoko'
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App userName={userName}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
