@@ -1,78 +1,55 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './App.module.css'
-// import robots from './mockdata/robots.json'
 import Robot from './components/Robots';
 import logo from './assets/images/logo.svg'
 import ShoppingCart from './components/ShoppingCart';
 
-interface Props{
 
-}
-interface State{
-  //为什么使用any，资源是来源于网络请求，返回的数据类型不受控制，强行模仿不现实.
-  //前端强行定义api的数据类型，违反前后端分离的原则。
-  //不能为了使用TS而放弃JavaScript的灵活性。
-  robotGallery:any
-  count:number
-}
+/* 
+  useEffect，副作用函数Side-effect  输入参数一样，而输出结果不确定的情况就是副作用
+  在使用React时，经常用useEffect，比如通过API获取数据，处理事件订阅等。
+  简单来说，APP就是通过副作用与外界产生交流和互动的。
+*/
 
-export default class App extends Component<Props,State> {
+const App: React.FC = (props) => {
+  // 实际上这个数组第一个元素就是state的getter，第二个就是state的setter
+  const [count, setCount] = useState<number>(0) //count状态的初始化值，即0
+  const [robotGallery, setRobotGallery] = useState<any>([]) //初始化为一个空数组
+  // setCount是异步的，而且没有重载，不能提供回调接口
+  // 那么如何处理异步逻辑呢，一般不需要处理，如果需的话就进入副作用钩子
   /* 
-    生命周期的第一阶段 ：初始化
-    主要是两个函数，第一个初始化state，第二个为compondentDidMount
-    将会在组件创建好dom原素后，挂载进页面时调用，只会在组件初始化的时候调用一次
-
+    默认情况下，每下UI渲染或状态改变的时候，useEffect函数都会执行。
+    但默认情况下的默作用非常消耗资源，应该选择适当的时机
+    第二个参数是数组，数组内是组件的状态列表，如果这个状态列表不为空，useEffect会盯住这个列表内的状态，
+    一定列表内状态发生了变化，useEffect就会被执行
+    如果第二个参数传入了一个空数组，就类似于componetDidMount，只会在页面初次渲染时调用。
   */
-  constructor(props){
-    super(props)
-    this.state = {
-      robotGallery:[],
-      count:0
-    }    
-  }
-  
- /* 
-  setState是异步处理的，本身提供了一个回调方法(就是第二个参数 )，用来访问处理后的数据
-  答案是：异步更新，同步执行。
-  setState()本身并非异步，但对state的处理机制给人一种异步的假像，state处理一般发生在生命周期变化的时候。
-
- */
-  //componentDidMount，render函数执行后
-  componentDidMount(){
+  useEffect(()=>{
+    document.title = `点击了${count}次`
+  },[count])
+  useEffect(()=>{
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
-      .then((data) => this.setState({ robotGallery: data }));
-  }
-  render() {
-    return (
+      .then((data) => setRobotGallery(data));
+  },[])
+  return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
             <img src={logo} alt="logo" className={styles.appLogo}/>
             <h1>CyberPunk机器人Inc</h1>
           </div>
-          {/* 
-           此时代码中有连续两个setState，正是因为异步操作的特殊性，所以在使用this.state的时候
-           只要生命周期没有变化，state的变化依然会停留在上一次操作中。
-           所在在setState的API中接收两个参数，第一个接收对象类型，用来更新state，而第二个
-           是组件state的异步操作处理，但第一个操作也可以改为箭头函数
-          
-          */}
           <button onClick={()=>{
-            this.setState((preState,preProps)=>{return {count:preState.count +1}},()=>{
-              console.log('this.count第一次',this.state.count)
-            })
-            this.setState((preState,preProps)=>{return {count:preState.count +1}},()=>{
-              console.log('this.count第二次',this.state.count)
-            })
+            setCount(count +1)
           }}>计数器</button>
-          <span>count:{this.state.count}</span>
+          <span>count:{count}</span>
           <ShoppingCart/>
           <div className={styles.robotList}>
-            {this.state.robotGallery.map(r => {
+            {robotGallery.map(r => {
             return <Robot id={r.id} email={r.email} name={r.name} key={r.id}/>
             })}
           </div>
         </div>
     )
-  }
 }
+
+export default App
