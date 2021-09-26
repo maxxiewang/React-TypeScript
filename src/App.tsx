@@ -5,7 +5,7 @@ import logo from './assets/images/logo.svg'
 import ShoppingCart from './components/ShoppingCart';
 
 interface Props{
-  userName:string
+  // userName:string
 }
 /* 
   useEffect，副作用函数Side-effect  输入参数一样，而输出结果不确定的情况就是副作用
@@ -65,7 +65,7 @@ const App: React.FC<Props> = (props) => {
             <img src={logo} alt="logo" className={styles.appLogo}/>
             <h1>CyberPunk机器人Inc</h1>
           </div>
-          <h2>{props.userName}</h2>
+          {/* <h2>{props.userName}</h2> */}
 
           <button onClick={()=>{
             setCount(count +1)

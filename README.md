@@ -39,7 +39,12 @@ Props:Properties 的缩写，组件属性。
 所有的 props 全部都是只读的(immutable)，对象一旦创建就不可改变，只能通过销毁、重建来改变数据。
 通过判断内存地址是否一致，来确认对象是否有经过修改。
 
-React组件的生命周期
-Mounting:创建虚拟DOM，渲染UI
-Updating:更新虚拟DOM，重新渲染UI
-Unmounting:删除虚拟DOM，移除UI
+React 组件的生命周期
+Mounting:创建虚拟 DOM，渲染 UI
+Updating:更新虚拟 DOM，重新渲染 UI
+Unmounting:删除虚拟 DOM，移除 UI
+
+Context 与 useContext
+原来组件间传递是 props，一层一层地往下传，又叫深度注入(props drilling)
+props 注入的越来越深，而组件更新的频率则会越来越高，这时 UI 渲染的效率则会越来越慢，且调试困难。
+而解决跨组件间数据传递注入的问题，其中一个解决方案是 React 的上下文关系对象：Context。
