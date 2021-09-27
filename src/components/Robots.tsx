@@ -1,7 +1,7 @@
 import React,{useContext} from 'react' // useContext钩子函数
 import styles from './Robot.module.css'
 // 引入上下文关系对象
-import {appContext} from '../index'
+import {appContext ,appSetStateContext} from '../AppState'
 
 interface RobotProps {
   id:number,
@@ -32,6 +32,20 @@ interface RobotProps {
 
 const Robot: React.FC<RobotProps> = ({id,name,email})=>{
   const value = useContext(appContext)
+  const setState = useContext(appSetStateContext)
+  const addToCart = ()=>{
+    //如果setState不为空
+    if(setState){
+      setState(state =>{
+        return { // 有undefined的可能，尝试自定义hook来处理
+          ...state,
+          shoppinCart:{
+            items:[...state.shoppinCart.items,{id,name}]
+          }
+        }
+      })
+    }
+  }
   return (
     // <appContext.Consumer>
     //   {(value)=>{
@@ -47,6 +61,7 @@ const Robot: React.FC<RobotProps> = ({id,name,email})=>{
      <img src={`https://robohash.org/${id}`} alt="robot" />
          <h2>{name}</h2>
       <p>作者：{value.userName}</p>
+      <button onClick={addToCart}>加入购物车</button>
     </div> //     
   )
 }

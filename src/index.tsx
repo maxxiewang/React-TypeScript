@@ -3,18 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-const defaultContextVal = {
-  userName:'lily'
-}
-
-export const appContext = React.createContext(defaultContextVal)
+import {AppStateProvider} from './AppState'
 
 ReactDOM.render(
   <React.StrictMode>
-    <appContext.Provider value={defaultContextVal}>
+    <AppStateProvider>
      <App />
-    </appContext.Provider>
+     </AppStateProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
