@@ -39,7 +39,9 @@ Props:Properties 的缩写，组件属性。
 所有的 props 全部都是只读的(immutable)，对象一旦创建就不可改变，只能通过销毁、重建来改变数据。
 通过判断内存地址是否一致，来确认对象是否有经过修改。
 
-React组件的生命周期
-Mounting:创建虚拟DOM，渲染UI
-Updating:更新虚拟DOM，重新渲染UI
-Unmounting:删除虚拟DOM，移除UI
+React 组件的生命周期
+Mounting:创建虚拟 DOM，渲染 UI
+Updating:更新虚拟 DOM，重新渲染 UI
+Unmounting:删除虚拟 DOM，移除 UI
+
+大纲
