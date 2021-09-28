@@ -1,5 +1,8 @@
-import React from 'react'
+import React,{useContext} from 'react' // useContext钩子函数
 import styles from './Robot.module.css'
+// 引入上下文关系对象
+import {appContext ,appSetStateContext} from '../AppState'
+
 interface RobotProps {
   id:number,
   name:string,
@@ -25,13 +28,41 @@ interface RobotProps {
   我们将泛型与 React 组件一起使用，以确保组件的 props 和 state 是类型安全的。
   https://blog.csdn.net/semlinker/article/details/106882403/
 */
+
+
 const Robot: React.FC<RobotProps> = ({id,name,email})=>{
+  const value = useContext(appContext)
+  const setState = useContext(appSetStateContext)
+  const addToCart = ()=>{
+    //如果setState不为空
+    if(setState){
+      setState(state =>{
+        return { // 有undefined的可能，尝试自定义hook来处理
+          ...state,
+          shoppinCart:{
+            items:[...state.shoppinCart.items,{id,name}]
+          }
+        }
+      })
+    }
+  }
   return (
+    // <appContext.Consumer>
+    //   {(value)=>{
+    //     return <div className={styles.cardContainer}>
+    //     <img src={`https://robohash.org/${id}`} alt="robot" />
+    //     <h2>{name}</h2>
+    //     <p>{email}</p>
+    //     <p>{value.userName}</p>
+    //   </div>  
+    //   }}
+    // </appContext.Consumer>
     <div className={styles.cardContainer}>
-      <img src={`https://robohash.org/${id}`} alt="robot" />
-      <h2>{name}</h2>
-      <p>{email}</p>
-    </div>
+     <img src={`https://robohash.org/${id}`} alt="robot" />
+         <h2>{name}</h2>
+      <p>作者：{value.userName}</p>
+      <button onClick={addToCart}>加入购物车</button>
+    </div> //     
   )
 }
 

@@ -1,10 +1,4 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
+# React App
 
 ### `npm start`
 
@@ -44,4 +38,7 @@ Mounting:创建虚拟 DOM，渲染 UI
 Updating:更新虚拟 DOM，重新渲染 UI
 Unmounting:删除虚拟 DOM，移除 UI
 
-大纲
+Context 与 useContext
+原来组件间传递是 props，一层一层地往下传，又叫深度注入(props drilling)
+props 注入的越来越深，而组件更新的频率则会越来越高，这时 UI 渲染的效率则会越来越慢，且调试困难。
+而解决跨组件间数据传递注入的问题，其中一个解决方案是 React 的上下文关系对象：Context。
