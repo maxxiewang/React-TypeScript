@@ -31,6 +31,7 @@ interface RobotProps {
 
 
 const Robot: React.FC<RobotProps> = ({id,name,email})=>{
+  // 访问上下文关系对象
   const value = useContext(appContext)
   const setState = useContext(appSetStateContext)
   const addToCart = ()=>{
@@ -60,6 +61,7 @@ const Robot: React.FC<RobotProps> = ({id,name,email})=>{
     <div className={styles.cardContainer}>
      <img src={`https://robohash.org/${id}`} alt="robot" />
          <h2>{name}</h2>
+         {/* 通过useContext，直接使用value */}
       <p>作者：{value.userName}</p>
       <button onClick={addToCart}>加入购物车</button>
     </div> //     
