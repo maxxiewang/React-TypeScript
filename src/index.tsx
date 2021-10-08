@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+// 直接全局注册，并在根组件导入
 import {AppStateProvider} from './AppState'
 
 ReactDOM.render(

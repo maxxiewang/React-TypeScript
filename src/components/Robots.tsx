@@ -34,14 +34,18 @@ const Robot: React.FC<RobotProps> = ({id,name,email})=>{
   // 访问上下文关系对象
   const value = useContext(appContext)
   const setState = useContext(appSetStateContext)
+  /* 
+    因为setState初始化的时候是一个undefined，所以在使用时应该做一个判断
+  */
   const addToCart = ()=>{
     //如果setState不为空
     if(setState){
+      // 这个setState是全局变量state的setter，所以可以向参数中传递匿名函数的形式来更新state
       setState(state =>{
         return { // 有undefined的可能，尝试自定义hook来处理
           ...state,
           shoppinCart:{
-            items:[...state.shoppinCart.items,{id,name}]
+            items:[...state.shoppingCart.items,{id,name}]
           }
         }
       })
