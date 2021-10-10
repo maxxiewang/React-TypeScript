@@ -10,7 +10,7 @@ interface Props{
 /* 
   useEffect，副作用函数Side-effect  输入参数一样，而输出结果不确定的情况就是副作用
   在使用React时，经常用useEffect，比如通过API获取数据，处理事件订阅等。
-  简单来说，APP就是通过副作用与外界产生交流和互动的。
+  简单来说，APP就是通过副作用与外界产生交流和互动的。(在无法使用生命周期的函数式组件)
 */
 
 const App: React.FC<Props> = (props) => {
@@ -22,10 +22,9 @@ const App: React.FC<Props> = (props) => {
   // setCount是异步的，而且没有重载，不能提供回调接口
   // 那么如何处理异步逻辑呢，一般不需要处理，如果需的话就进入副作用钩子
   /* 
-    默认情况下，每下UI渲染或状态改变的时候，useEffect函数都会执行。
-    但默认情况下的默作用非常消耗资源，应该选择适当的时机
+    默认情况下，每下UI渲染或状态改变的时候，useEffect函数都会执行，但默认情况下的默作用非常消耗资源，应该选择适当的时机。
     第二个参数是数组，数组内是组件的状态列表，如果这个状态列表不为空，useEffect会盯住这个列表内的状态，
-    一定列表内状态发生了变化，useEffect就会被执行
+    一定是列表内状态发生了变化，useEffect才会被执行
     如果第二个参数传入了一个空数组，就类似于componetDidMount，只会在页面初次渲染时调用。
   */
   useEffect(()=>{
@@ -42,6 +41,7 @@ const App: React.FC<Props> = (props) => {
   // 如何处理异常
   useEffect(()=>{    
     const fetchData = async ()=>{
+      console.log('页面更新，执行useEffect')
       setLoading(true);
       try {
         const responses = await fetch(
