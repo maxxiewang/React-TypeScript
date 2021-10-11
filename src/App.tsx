@@ -37,8 +37,10 @@ const App: React.FC<Props> = (props) => {
   //     .then((data) => setRobotGallery(data));
   // },[]) // 注意这个空数组
 
-  // 如何在副作用函数中使用asnyc await
+  // 如何在副作用函数中使用asnyc await，useEffect不支持关键词async
   // 如何处理异常
+  // 1、useEffect要么返回一个函数，要么什么都不返回。2、不支持关键词async，因为async返回一个promise.
+  // 所以useEffect用asnyc修饰后，返回的promise即不是函数也不是null，所以会报错。
   useEffect(()=>{    
     const fetchData = async ()=>{
       console.log('页面更新，执行useEffect')

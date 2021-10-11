@@ -41,10 +41,12 @@ const Robot: React.FC<RobotProps> = ({id,name,email})=>{
     //如果setState不为空
     if(setState){
       // 这个setState是全局变量state的setter，所以可以向参数中传递匿名函数的形式来更新state
+      // 这个state就是外面包进来的那个state
       setState(state =>{
+        console.log('state。。。。',state)
         return { // 有undefined的可能，尝试自定义hook来处理
           ...state,
-          shoppinCart:{
+          shoppingCart:{
             items:[...state.shoppingCart.items,{id,name}]
           }
         }
