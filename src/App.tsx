@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import styles from './App.module.css'
-import Robot from './components/Robots';
+import Robot from './components/Robots'
 import logo from './assets/images/logo.svg'
-import ShoppingCart from './components/ShoppingCart';
+import ShoppingCart from './components/ShoppingCart'
+import LikeButton from './components/LikeButton'
+import MouseTracker from './components/MouseTracker'
+// import { LikeButton } from './components/LikeButton'
+// import LikeButton from './components/LikeButton.tsx'
 
-interface Props{
+interface Props {
   // userName:string
 }
 /* 
@@ -19,6 +23,7 @@ const App: React.FC<Props> = (props) => {
   const [robotGallery, setRobotGallery] = useState<any>([]) //初始化为一个空数组
   const [loading, setLoading] = useState<boolean>(false) // 初始化值，false
   const [error, setError] = useState<string>('')
+  const [show, setShow] = useState<boolean>(true)
   // setCount是异步的，而且没有重载，不能提供回调接口
   // 那么如何处理异步逻辑呢，一般不需要处理，如果需的话就进入副作用钩子
   /* 
@@ -27,9 +32,9 @@ const App: React.FC<Props> = (props) => {
     一定是列表内状态发生了变化，useEffect才会被执行
     如果第二个参数传入了一个空数组，就类似于componetDidMount，只会在页面初次渲染时调用。
   */
-  useEffect(()=>{
+  useEffect(() => {
     document.title = `点击了${count}次`
-  },[count])
+  }, [count])
 
   // useEffect(()=>{
   //   fetch("https://jsonplaceholder.typicode.com/users")
@@ -41,50 +46,67 @@ const App: React.FC<Props> = (props) => {
   // 如何处理异常
   // 1、useEffect要么返回一个函数，要么什么都不返回。2、不支持关键词async，因为async返回一个promise.
   // 所以useEffect用asnyc修饰后，返回的promise即不是函数也不是null，所以会报错。
-  useEffect(()=>{    
-    const fetchData = async ()=>{
+  useEffect(() => {
+    const fetchData = async () => {
       console.log('页面更新，执行useEffect')
-      setLoading(true);
+      setLoading(true)
       try {
         const responses = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
-        );
+          'https://jsonplaceholder.typicode.com/users'
+        )
         // .then(response => response.json())
         // .then(data => setRobotGallery(data))
-        const data = await responses.json();
-        setRobotGallery(data);
-      } catch (e:any) {
-        console.log('e.message',e.message)
-        setError(e.message);
+        const data = await responses.json()
+        setRobotGallery(data)
+      } catch (e: any) {
+        console.log('e.message', e.message)
+        setError(e.message)
       }
-      setLoading(false);
+      setLoading(false)
     }
     fetchData()
-  },[]) // 注意这个空数组
+  }, []) // 注意这个空数组
   return (
-        <div className={styles.app}>
-          <div className={styles.appHeader}>
-            <img src={logo} alt="logo" className={styles.appLogo}/>
-            <h1>CyberPunk机器人Inc</h1>
-          </div>
-          {/* <h2>{props.userName}</h2> */}
+    <div className={styles.app}>
+      <div className={styles.appHeader}>
+        <img src={logo} alt="logo" className={styles.appLogo} />
+        <h1>CyberPunk机器人Inc</h1>
+      </div>
+      {/* <h2>{props.userName}</h2> */}
 
-          <button onClick={()=>{
-            setCount(count +1)
-          }}>计数器</button>
-          <span>count:{count}</span>
-          <ShoppingCart/>
-          {(error || error!== "") && <div>网站出错：{error}</div>}
-          {
-            !loading?
-            (<div className={styles.robotList}>
-              {robotGallery.map(r => {
-              return <Robot id={r.id} email={r.email} name={r.name} key={r.id}/>
-              })}
-            </div>):(<h2>loading 加载中</h2>)
-          }
+      <button
+        onClick={() => {
+          setCount(count + 1)
+        }}
+      >
+        计数器
+      </button>
+      <LikeButton />
+      <p>
+        <button
+          onClick={() => {
+            setShow(!show)
+          }}
+        >
+          改变show状态
+        </button>
+      </p>
+      {show && <MouseTracker />}
+
+      <span>count:{count}</span>
+      <ShoppingCart />
+      {(error || error !== '') && <div>网站出错：{error}</div>}
+      {!loading ? (
+        <div className={styles.robotList}>
+          {robotGallery.map((r) => {
+            return <Robot id={r.id} email={r.email} name={r.name} key={r.id} />
+          })}
         </div>
-    )
+      ) : (
+        <h2>loading 加载中</h2>
+      )}
+    </div>
+  )
 }
 
 export default App
