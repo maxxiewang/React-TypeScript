@@ -5,6 +5,7 @@ import logo from './assets/images/logo.svg'
 import ShoppingCart from './components/ShoppingCart'
 import LikeButton from './components/LikeButton'
 import MouseTracker from './components/MouseTracker'
+import useMousePosition from './hooks/useMousePosition'
 // import { LikeButton } from './components/LikeButton'
 // import LikeButton from './components/LikeButton.tsx'
 
@@ -24,6 +25,8 @@ const App: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState<boolean>(false) // 初始化值，false
   const [error, setError] = useState<string>('')
   const [show, setShow] = useState<boolean>(true)
+  //! 使用自定义hook
+  const positions = useMousePosition()
   // setCount是异步的，而且没有重载，不能提供回调接口
   // 那么如何处理异步逻辑呢，一般不需要处理，如果需的话就进入副作用钩子
   /* 
@@ -94,6 +97,16 @@ const App: React.FC<Props> = (props) => {
       {show && <MouseTracker />}
 
       <span>count:{count}</span>
+      <p
+        style={{
+          paddingTop: 10,
+          paddingBottom: 10,
+          fontSize: 20,
+          color: 'black',
+        }}
+      >
+        X:{positions.x},Y:{positions.y}
+      </p>
       <ShoppingCart />
       {(error || error !== '') && <div>网站出错：{error}</div>}
       {!loading ? (

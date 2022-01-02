@@ -18,8 +18,8 @@ const MouseTracker: React.FC = () => {
       console.log('remove effect', positions.x)
       document.removeEventListener('click', updateMouse)
     }
-  }, []) //!这里面的空数组和上面return一个函数进行比较
-  console.log('before render', positions.x)
+  }, [positions]) //!这里面的空数组和上面return一个函数进行比较
+  // console.log('before render??', positions.x)
   return (
     <>
       <p

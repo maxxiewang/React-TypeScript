@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import useMousePosition from '../hooks/useMousePosition'
 
 const LikeButton: React.FC = () => {
   const [obj, setObj] = useState({ like: 0, on: true })
   const [switchSts, setSwitchSus] = useState(true)
+  const positions = useMousePosition()
   useEffect(() => {
     document.title = `EFF ${obj.like}！`
   })
@@ -31,6 +33,9 @@ const LikeButton: React.FC = () => {
       >
         {switchSts ? '工作中' : '停车'}
       </button>
+      <h3>
+        x:{positions.x},y:{positions.y}
+      </h3>
     </>
   )
 }
