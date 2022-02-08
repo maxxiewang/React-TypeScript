@@ -8,6 +8,41 @@ import MouseTracker from './components/MouseTracker'
 import useMousePosition from './hooks/useMousePosition'
 // import { LikeButton } from './components/LikeButton'
 // import LikeButton from './components/LikeButton.tsx'
+import withLoader from './components/withLoader'
+import useURLLoader from './hooks/useURLLoader'
+
+interface IShowResult {
+  message: string
+  status: string
+}
+
+//* 演示useContext
+interface IThemeProps {
+  [key: string]: { color: string; background: string }
+}
+
+const themes: IThemeProps = {
+  light: {
+    color: '#000',
+    background: '#eee',
+  },
+  dark: {
+    color: '#f4f4f4',
+    background: '#222',
+  },
+}
+
+//! useContext案例
+export const ThemeContext = React.createContext(themes.light)
+
+const DogShow: React.FC<{ data: IShowResult }> = ({ data }) => {
+  return (
+    <>
+      <h2>Dog show:{data.status}</h2>
+      <img src={data.message} />
+    </>
+  )
+}
 
 interface Props {
   // userName:string
@@ -27,6 +62,18 @@ const App: React.FC<Props> = (props) => {
   const [show, setShow] = useState<boolean>(true)
   //! 使用自定义hook
   const positions = useMousePosition()
+  const [data, loadding] = useURLLoader(
+    'https://dog.ceo/api/breeds/image/random',
+    [show]
+  )
+  const dogResult = data as IShowResult
+  // console.log('dogResult', dogResult)
+  //! hoc函数组件
+  // const DogShowtime = withLoader(
+  //   DogShow,
+  //   'https://dog.ceo/api/breeds/image/random'
+  // )
+  // console.log('DogShowtime', DogShowtime)
   // setCount是异步的，而且没有重载，不能提供回调接口
   // 那么如何处理异步逻辑呢，一般不需要处理，如果需的话就进入副作用钩子
   /* 
@@ -94,6 +141,11 @@ const App: React.FC<Props> = (props) => {
           改变show状态
         </button>
       </p>
+      {loadding ? (
+        <p>狗狗读取中</p>
+      ) : (
+        <img src={dogResult && dogResult.message} />
+      )}
       {show && <MouseTracker />}
 
       <span>count:{count}</span>
@@ -107,6 +159,8 @@ const App: React.FC<Props> = (props) => {
       >
         X:{positions.x},Y:{positions.y}
       </p>
+      {/* HOC组件实现 */}
+      {/* <DogShowtime /> */}
       <ShoppingCart />
       {(error || error !== '') && <div>网站出错：{error}</div>}
       {!loading ? (
